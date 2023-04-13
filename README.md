@@ -92,9 +92,17 @@ class Test {
 
 [kotlin日志封装参考实现](https://github.com/Songzhizong/ideal-framework2/blob/master/ideal-core/src/main/kotlin/cn/idealio/framework/logging/kotlin/internal/LocationAwareSuspendLogger.kt)
 
+## 测试
+
+### 功能测试
+
+目标: 成功在日志中输出TraceId
+
+![trace_log](./assets/WX20230414-004303@2x.png)
+
 ### 压力测试
 
-在Reactor和协程中使用以下方法对功能正确性进行测试
+在Reactor和协程中使用以下方法对功能正确性进行测试, 日志级别修改为ERROR.
 
 ```java
 public class Utils {

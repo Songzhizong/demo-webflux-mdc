@@ -68,6 +68,7 @@ class CoroutineController {
     val mdcContext = Utils.getMDCContext().awaitSingle()
     MDC.setContextMap(mdcContext)
     Utils.checkMDC(traceId, mark)
+    log.info("checkMDC: $mark")
     return traceId
   }
 }

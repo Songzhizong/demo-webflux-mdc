@@ -29,8 +29,12 @@ public class MonoController {
       .range(1, 10)
       .flatMap(i -> {
         Utils.checkMDC(traceId, "flux-1-1");
+        log.info("flux-1-1");
         return Mono.delay(delay)
-          .doOnNext(l -> Utils.checkMDC(traceId, "flux-1-2"));
+          .doOnNext(l -> {
+            Utils.checkMDC(traceId, "flux-1-2");
+            log.info("flux-1-2");
+          });
       })
       .collectList()
       .map(l -> traceId);
@@ -40,6 +44,7 @@ public class MonoController {
   private static Mono<String> checkThen1(String traceId) {
     return Mono.fromCallable(() -> {
         Utils.checkMDC(traceId, "then-1-1");
+        log.info("then-1-1");
         return traceId;
       })
       .delayElement(delay)
@@ -47,15 +52,20 @@ public class MonoController {
         Mono.delay(delay)
           .flatMap(i -> {
             Utils.checkMDC(traceId, "then-1-2");
+            log.info("then-1-2");
             return Mono.just(traceId);
           })
       )
       .flatMap(s ->
         Flux.range(1, 10)
-          .doOnNext(i -> Utils.checkMDC(traceId, "then-1-3"))
+          .doOnNext(i -> {
+            Utils.checkMDC(traceId, "then-1-3");
+            log.info("then-1-3");
+          })
           .collectList()
           .map(l -> {
             Utils.checkMDC(traceId, "then-1-4");
+            log.info("then-1-4");
             return traceId;
           })
       );
@@ -65,14 +75,19 @@ public class MonoController {
   private static Mono<String> checkThen2(String traceId) {
     return Mono.<Boolean>create(s -> {
         Utils.checkMDC(traceId, "then-2-1");
+        log.info("then-2-1");
         s.success(true);
       })
       .flatMap(b ->
         Flux.range(1, 10)
-          .doOnNext(i -> Utils.checkMDC(traceId, "then-2-2"))
+          .doOnNext(i -> {
+            Utils.checkMDC(traceId, "then-2-2");
+            log.info("then-2-2");
+          })
           .collectList()
           .map(l -> {
             Utils.checkMDC(traceId, "then-2-3");
+            log.info("then-2-3");
             return traceId;
           }))
       .thenReturn(traceId);
@@ -81,6 +96,7 @@ public class MonoController {
   @GetMapping
   public Mono<String> mono() {
     String traceId = MDC.get(Constants.TRACE_ID_HEADER);
+    log.info("traceId: {}", traceId);
     // 验证MDC与ReactorContext中的值是否一致
     return Utils.deferContextual(traceId)
       .delayElement(delay)

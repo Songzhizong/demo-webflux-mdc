@@ -5,7 +5,7 @@ logging:
   charset:
     console: utf-8
   level:
-    root: error
+    root: info
     io.netty.resolver.dns.DnsServerAddressStreamProviders: off
     org.springframework.core.LocalVariableTableParameterNameDiscoverer: error
   pattern:
