@@ -7,6 +7,7 @@
 ### 在过滤器中设置TraceId
 
 ```java
+
 @Component
 public class MdcFilter implements WebFilter, Ordered {
   private static final Logger log = LoggerFactory.getLogger(MdcFilter.class);
@@ -90,3 +91,34 @@ class Test {
 ```
 
 [kotlin日志封装参考实现](https://github.com/Songzhizong/ideal-framework2/blob/master/ideal-core/src/main/kotlin/cn/idealio/framework/logging/kotlin/internal/LocationAwareSuspendLogger.kt)
+
+### 压力测试
+
+在Reactor和协程中使用以下方法对功能正确性进行测试
+
+```java
+public class Utils {
+
+  /**
+   * 验证MDC中的traceId与是否与预期值一致
+   *
+   * @param target 预期的traceId值
+   * @param mark   标记调试位置
+   */
+  public static String checkMDC(@Nonnull String target, @Nonnull String mark) {
+    String traceIe = MDC.get(Constants.TRACE_ID_HEADER);
+    if (!target.equals(traceIe)) {
+      log.error("{} MDC value not matching {} -> {}", mark, target, traceIe);
+    }
+    return traceIe;
+  }
+}
+```
+
+jmeter开启2000个线程对两个接口进行压测, 压测目标: 上述方法不输出error日志.
+
+jmeter压测报告如下:
+![jmeter](./assets/WX20230414-003459@2x.png)
+
+未输出error日志, 说明功能实现正确.
+![log](./assets/WX20230414-003624@2x.png)
