@@ -36,7 +36,8 @@ public class Utils {
         return Mono.just(Map.of());
       }
       Object o = view.get(Constants.MDC_KEY);
-      @SuppressWarnings("unchecked") Map<String, String> ctx = (Map<String, String>) o;
+      @SuppressWarnings("unchecked")
+      Map<String, String> ctx = (Map<String, String>) o;
       return Mono.just(ctx);
     });
   }

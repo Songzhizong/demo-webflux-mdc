@@ -80,7 +80,7 @@ class Test {
   /**
    * 输出日志, 此时输出的日志将能打印MDC中的信息
    *
-   * 如果每次打日志都需要手动设置MDC的话未面太麻烦了, 可以对SLF4j进行简单的封装.
+   * 如果每次打日志都需要手动设置MDC的话未面太麻烦了, 可以对SLF4j进行简单的封装.参考[com.example.webflux.mdc.logging.LocationAwareSuspendLogger]
    */
   suspend fun <T> test() {
     val ctx = Utils.getMDCContext().awaitSingle()
@@ -89,8 +89,6 @@ class Test {
   }
 }
 ```
-
-[kotlin日志封装参考实现](https://github.com/Songzhizong/ideal-framework2/blob/master/ideal-core/src/main/kotlin/cn/idealio/framework/logging/kotlin/internal/LocationAwareSuspendLogger.kt)
 
 ## 测试
 
