@@ -1,0 +1,9 @@
+#! /bin/sh
+cd "$(dirname "$0")" || exit
+mvn clean install
+cd ./scheme-a || exit
+mvn clean package -Pnative native:compile-no-fork
+cp ./target/scheme-a ../scheme-a-launcher
+cd ../scheme-b || exit
+mvn clean package -Pnative native:compile-no-fork
+cp ./target/scheme-b ../scheme-b-launcher
